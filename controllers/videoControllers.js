@@ -2,12 +2,21 @@ const Video = require('../models/Video.js')
 
 //crear nuevo video
 exports.nuevoVideo = async (req, res, next) => {
-    //crear objeto de paciente con datos de req.body
+    //crear objeto de video con datos de req.body
     const video = new Video(req.body);
+
+    if (req.file) {
+        const{ filename } = req.file
+        video.setVideoURL(filename)
+    }
 
     try {
         await video.save();
-        res.json({ mensaje: 'El Video se agregó correctamente' })
+        res.json({ 
+            mensaje: 'El Video se agregó correctamente',
+            file: req.file,
+            body: req.body
+        })
     } catch (error) {
         console.log(error);
         next();
