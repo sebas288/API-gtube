@@ -1,16 +1,20 @@
 const express = require('express')
 const router = express.Router()
 const videoController = require('../controllers/videoControllers')
+const upload = require('../libs/storage')
 
 module.exports = function () {
+    
 
-    router.get('/', () => {
-        console.log("hola");
+    router.get('/', (req, res, next) => {
+        res.sendFile(__dirname + "/views/index.html"); 
     })
+
     // agrega nuevos pacientes via post
-    router.post('/videos',
+    router.post('/videos', upload.single('videoURL'),
         videoController.nuevoVideo
     );
+    
     //obtiene registros de la base de datos
     router.get('/videos',
         videoController.obtenerVideos
@@ -21,7 +25,7 @@ module.exports = function () {
     )
     //actualizar un video con id específico
     router.put('/videos/:id',
-        videoController.actualizarVideo
+        videoController.actualizarVideo 
     )
     //Eliminar video por ID
     router.delete('/videos/:id',

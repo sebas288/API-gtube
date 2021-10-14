@@ -2,10 +2,11 @@ const express = require('express')
 const routes = require('./routes/app.js')
 const mongoose  = require('mongoose')
 const bodyParser = require('body-parser')
+const { appConfig } = require('./config');
 
 const app = express()
-const port = process.env.PORT || 4000
-const uri = 'mongodb://localhost/glober-tube'
+const { port } = appConfig
+const uri = process.env.MONGODB_URI
 
 //Conexión a la base de datos
 mongoose.connect(uri)
@@ -16,6 +17,9 @@ mongoose.connect(uri)
 //Habilitar el body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
+
+//Habilitar la lectura de contenido estatico
+app.use(('/public'),express.static(`${__dirname}/storage`))
 
 //Habilitar routing
 app.use('/', routes())//middleware de express, cuando el usuario entre a / vamos a ejecutar la funcion de routes
