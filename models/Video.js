@@ -15,10 +15,10 @@ const videosSchema = Schema({
         type: String,
         trim: true
     },
-    category: {
-        type: String,
-        trim: true
-    },
+    categoryId: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Category'
+      },
     tags:{
         type: String
     },
@@ -28,6 +28,9 @@ const videosSchema = Schema({
     createdAt:{
         type:Date, 
         default: () => Date.now() - 5*60*60*1000
+    },
+    likes:{
+        type:Number
     }
 })
 
